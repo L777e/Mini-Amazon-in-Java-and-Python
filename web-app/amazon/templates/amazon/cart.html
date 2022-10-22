@@ -1,0 +1,85 @@
+{% extends "amazon/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Cart | {% endblock %}   
+{% block content %}     
+ 
+    <!-- Cart Start -->
+    <div class="cart-page">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="cart-page-inner">
+                        <div class="table-responsive">
+                            <table class="table table-bordered"> 
+                                {% if items %}
+                                <div class="cart-row">
+                                    <thead class="thead-dark"> 
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                            <th>Remove</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="align-middle">
+                                        {% for item in items %}
+                                        <tr>
+                                            <td>
+                                                <div class="img">
+                                                    <a ><img src="{{ item.product.imageURL }}" alt="Image"></a>
+                                                    <p>{{ item.product.title }}</p>
+                                                </div>
+                                            </td>
+                                            <td>${{ item.product.price }}</td>
+                                            <td>
+                                                <div class="qty">
+                                                    <button data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" ><i class="fa fa-minus"></i></button>
+                                                    <input value = "{{ item.quantity }}" disabled="true">
+                                                    <button data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart"><i class="fa fa-plus"></i></button>
+                                                </div>
+                                            </td>
+                                            <td>${{ item.get_total|floatformat:2 }}</td>
+                                            <td><button data-product="{{item.product.id}}" data-action="clear" class="chg-quantity update-cart" ><i class="fa fa-trash"></i></button></td>
+                                        </tr>
+                                        {%endfor%}
+                                    </tbody>
+                                    {% else %}
+                                    <td>Your cart is empty!</td>
+                                    {% endif %}
+                                </div>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="cart-page-inner">
+                        <div class="row">
+                            <div class="col-md-12">
+                            </div>
+                            <div class="col-md-12">
+                                <div class="cart-summary">
+                                    <div class="cart-content">
+                                        <h1>Cart Summary</h1>
+                                        <p>Items<span>{{order.get_cart_items}}</span></p>
+                                        <h2>Total<span>${{order.get_cart_total|floatformat:2}}</span></h2>
+                                    </div>
+                                    <form v-on:submit.prevent="submitForm()">
+                                        <div class="field">
+                                            <div class="control">
+                                                <div class="cart-btn">
+                                                    <a class="btn" style="display:block;margin:0 auto" href="{% url 'checkout'%}">Checkout</a>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Cart End -->
+{% endblock content %}

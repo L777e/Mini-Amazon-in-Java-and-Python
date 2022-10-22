@@ -1,0 +1,52 @@
+version: '2'
+
+services:
+  db:
+      image: postgres
+      hostname: db
+      environment:
+        POSTGRES_PASSWORD: passw0rd
+        POSTGRES_USER: postgres
+        POSTGRES_DB: amazon
+      expose:
+        - "5432"
+      restart: always
+      volumes:
+            - data-volume:/var/lib/postgresql/data
+  web-init:
+      build: ./web-app
+      command: bash -c "chmod o+x wait-for-it.sh && ./wait-for-it.sh db:5432 --strict -- ./initserver.sh"
+      volumes:
+        - ./web-app:/code
+      depends_on:
+        - db
+  web:
+      build: ./web-app
+      user: nobody
+      command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate && ./wait-for-it.sh db:5432 --strict -- ./runserver.sh"
+      volumes:
+        - ./web-app:/code
+      expose:
+        - "8000"
+      depends_on:
+        - web-init
+  nginx:
+     image: nginx:latest
+     ports:
+       - "8000:8000"
+     volumes:
+       - ./nginx/config:/etc/nginx/conf.d
+     depends_on:
+       - web
+  back-end:
+        build: ./back-end
+        command: bash -c "./gradlew run"
+        ports:
+          - "54321:54321" # port for UPS
+          - "22222:22222" # port for UPS
+          - "6666:6666" # port for web
+        depends_on:
+          - web
+  
+volumes:
+   data-volume: 

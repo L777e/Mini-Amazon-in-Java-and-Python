@@ -1,0 +1,99 @@
+{% extends "amazon/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Checkout | {% endblock %}
+{% block content %}  
+
+    <!-- Checkout Start -->
+    <div class="checkout">
+        <div class="container-fluid"> 
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="checkout-inner">
+                        <div class="billing-address">
+                            <form  method="post">
+                                {% csrf_token %}
+                                <div id="user-info">
+                                    <div class="form-field">
+                                        <input required class="form-control" type="text" name="name" id="name" placeholder="Name..">
+                                    </div>
+                                    <div class="form-field">
+                                        <input required class="form-control" type="email" name="email" id="email" placeholder="Email..">
+                                    </div>
+                                </div>
+                                <div id="shipping-info">
+                                    <hr>
+                                    <p>Shipping Address:</p>
+                                    <hr>
+                                    <div class="form-field">
+                                        <input type="number" min=0 max=150 required class="form-control" id="address_x" name="address_x" placeholder="Address X..">
+                                        <div class="invalid-feedback" style="width: 100%;">
+                                            Dest-X is requires.
+                                        </div>
+                                    </div>
+                                    <div class="form-field">
+                                        <input type="number" min=0 max=150 required class="form-control" id="address_y" name="address_y" placeholder="Address Y..">
+                                        <div class="invalid-feedback" style="width: 100%;">
+                                            Dest-Y is requires.
+                                        </div>
+                                    </div>
+                                    <div class="form-field">
+                                        <input id="transaction_id" class="form-control" type="text" name="UPS_id" placeholder="UPS_id..(Optional, for UPS)">
+                                    </div>
+                                </div>
+            
+                                <hr>
+                                <input id="form-button" class="btn btn-success btn-block" type="submit" value="Place order">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="checkout-inner">
+                        <div class="checkout-summary">
+                            <h1>Cart Summary</h1>
+                            <p>Items<span>{{order.get_cart_items}}</span></p>
+                            <h2>Total<span>${{order.get_cart_total|floatformat:2}}</span></h2>
+                        </div>
+                        <div class="checkout-payment">
+                            <div class="payment-methods">
+                                <h1>Payment Methods</h1>
+                                <div class="payment-method">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="payment-1" name="payment">
+                                        <label class="custom-control-label" for="payment-1">Paypal</label>
+                                    </div>
+                                </div>
+                                <div class="payment-method">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="payment-2" name="payment">
+                                        <label class="custom-control-label" for="payment-2">Payoneer</label>
+                                    </div>
+                                </div>
+                                <div class="payment-method">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="payment-3" name="payment">
+                                        <label class="custom-control-label" for="payment-3">Check Payment</label>
+                                    </div>
+                                </div>
+                                <div class="payment-method">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="payment-4" name="payment">
+                                        <label class="custom-control-label" for="payment-4">Direct Bank Transfer</label>
+                                    </div>
+                                </div>
+                                <div class="payment-method">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="payment-5" name="payment">
+                                        <label class="custom-control-label" for="payment-5">Cash on Delivery</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Checkout End -->
+    
+{% endblock content %}

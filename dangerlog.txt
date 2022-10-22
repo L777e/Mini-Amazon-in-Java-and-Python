@@ -1,0 +1,31 @@
+4/12/2021:
+Unable to identify world server after receiving UPS side initial connection.
+
+
+4/14/2021
+Fixed world connection problem by changing our constructed APurchasemore response
+UPS side will get 0 world id every time we send ack to them
+
+4/17/2021:
+Fixed 0-world id problem by changing our constructed ATOU response
+
+
+4/21/2021:
+UPS side will not get our pick-package request after they received ack from us, but world can send us responses.
+
+
+4/22/2021:
+Fixed can-not-get-pick-package-request problem. The problem is resolved by changing our communication scheme with UPS from
+listen-and-construct-a-new-socket to using-first-time-accept-socket every time(ie, using port 2222 to communicate from start to end)
+(do not consider multi-UPS at this times)
+
+
+4/22/2021:
+Truck_id can not show on front end page
+
+4/22/2021:
+Solved Truck_id problem by changing track_id in database table to truck_id
+
+4/22/2021:
+Found package -ever-delivering problem
+Fixed: update package status to delivered status in database before deleting package object from amazon-server side's package tracking map
